@@ -22,7 +22,7 @@ public class SchedulesEntity {
     private FilmsEntity filmsEntity;
 
     @Column(name = "price")
-    private int price;
+    private Integer price;
 
     @Column(name = "show_date")
     private LocalDate show_date;

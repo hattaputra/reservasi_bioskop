@@ -16,14 +16,6 @@ public class StudiosEntity {
     @Column(name = "studio_id")
     private Integer studio_id;
 
-    @MapsId("seatId")
-    @JoinColumns({
-            @JoinColumn(name = "seat_number", referencedColumnName = "seat_number"),
-            @JoinColumn(name = "seat_row", referencedColumnName = "seat_row")
-    })
-    @ManyToOne
-    private SeatsEntity seatsEntity;
-
     @Column(name = "studio_name")
     private String studio_name;
 

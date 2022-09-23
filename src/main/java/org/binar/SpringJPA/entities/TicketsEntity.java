@@ -26,31 +26,12 @@ public class TicketsEntity {
     @JoinColumn(name = "schedule_id", referencedColumnName = "schedule_id")
     private SchedulesEntity schedulesEntity;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "studio_id", referencedColumnName = "studio_id")
-    private StudiosEntity studiosEntity;
+    @MapsId("seatId")
+    @JoinColumns({
+            @JoinColumn(name = "seat_number", referencedColumnName = "seat_number"),
+            @JoinColumn(name = "seat_row", referencedColumnName = "seat_row")
+    })
+    @OneToOne
+    private SeatsEntity seatsEntity;
 
-    @Column(name ="studio_name")
-    private String studioName;
-
-    @Column(name ="seat_row")
-    private Character seat_row;
-
-    @Column(name ="seat_number")
-    private Integer seat_number;
-
-    @Column(name ="film_name")
-    private String film;
-
-    @Column(name ="price")
-    private Integer price;
-
-    @Column(name ="show_date")
-    private LocalDate showdate;
-
-    @Column(name ="start_at")
-    private LocalTime start_at;
-
-    @Column(name ="end_at")
-    private LocalTime End_at;
 }

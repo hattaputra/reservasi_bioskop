@@ -6,6 +6,9 @@ import org.binar.SpringJPA.services.FilmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,6 +34,11 @@ public class FilmsServiceImpl implements FilmsService {
     }
     public Iterable<FilmsEntity> findAll(){
         return filmsRepo.findAll();
+    }
+
+    public List<FilmsEntity> isShowing(){
+        LocalDate date = LocalDate.now();
+        return filmsRepo.findOnShowingFilms(date);
     }
     public void delete(String code){
         filmsRepo.deleteById(code);

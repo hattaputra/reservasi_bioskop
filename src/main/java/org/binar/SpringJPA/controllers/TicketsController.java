@@ -1,12 +1,16 @@
 package org.binar.SpringJPA.controllers;
 
 import org.binar.SpringJPA.dto.ResponseData;
-import org.binar.SpringJPA.entities.TicketsEntity;
+import org.binar.SpringJPA.dto.TicketData;
+import org.binar.SpringJPA.entities.*;
 import org.binar.SpringJPA.services.impl.TicketsServiceImpl;
+import org.binar.SpringJPA.services.impl.UsersServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.PublicKey;
 
 @RestController
 @RequestMapping("/tickets")
@@ -14,28 +18,28 @@ public class TicketsController {
     @Autowired
     TicketsServiceImpl ticketsServiceImpl;
 
-//    @PostMapping("/create")
-//    public ResponseEntity<ResponseData<TicketsEntity>> create(@RequestBody TicketsEntity ticket){
-//        try{
-//            ResponseData<TicketsEntity> data = new ResponseData<>();
-//            data.setStatus("200");
-//            data.setMessagge("Film successfully added");
-//            ticketsServiceImpl.create(ticket);
-//            data.setData(ticketsServiceImpl.create(ticket));
-//            return ResponseEntity.ok(data);
-//        }catch (Exception e){
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-//        }
-//    }
-
-    @PostMapping("/create")
-    public ResponseEntity<ResponseData<TicketsEntity>> create(@RequestBody TicketsEntity ticket){
+    @PostMapping("/buy-ticket")
+    public ResponseEntity<ResponseData<TicketData>> create(@RequestBody TicketsEntity ticket){
         try{
-            ResponseData<TicketsEntity> data = new ResponseData<>();
+            TicketData tdata = new TicketData();
+            ResponseData<TicketData> data = new ResponseData<>();
+            UsersEntity user = ticket.getUsersEntity();
+            SchedulesEntity schedules = ticket.getSchedulesEntity();
+            FilmsEntity film = ticket.getSchedulesEntity().getFilmsEntity();
+            SeatsEntity seat = ticket.getSeatsEntity();
+            StudiosEntity studio = ticket.getSeatsEntity().getStudiosEntity();
+            tdata.setUsername(user.getUsername());
+            tdata.setFilm(film.getFilm_name());
+            tdata.setPrice(schedules.getPrice());
+            tdata.setStudio(studio.getStudio_name());
+            tdata.setSeat(seat.getId());
+            tdata.setShowDate(schedules.getShow_date());
+            tdata.setStartAt(schedules.getStart_at());
+            tdata.setEndAt(schedules.getEnd_at());
             data.setStatus("200");
-            data.setMessagge("Film successfully added");
+            data.setMessagge("Ticket successfully reserved");
+            data.setData(tdata);
             ticketsServiceImpl.create(ticket);
-            data.setData(ticketsServiceImpl.create(ticket));
             return ResponseEntity.ok(data);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -47,7 +51,7 @@ public class TicketsController {
         try{
             ResponseData<TicketsEntity> data = new ResponseData<>();
             data.setStatus("200");
-            data.setMessagge("Film successfully added");
+            data.setMessagge("Ticket successfully updated");
             data.setData(ticketsServiceImpl.update(id, ticket));
             return ResponseEntity.ok(data);
         }catch (Exception e){
