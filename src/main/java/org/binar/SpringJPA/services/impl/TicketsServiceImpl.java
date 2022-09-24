@@ -1,13 +1,14 @@
 package org.binar.SpringJPA.services.impl;
 
-import org.binar.SpringJPA.entities.StudiosEntity;
 import org.binar.SpringJPA.entities.TicketsEntity;
 import org.binar.SpringJPA.repositories.TicketsRepo;
 import org.binar.SpringJPA.services.TicketsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class TicketsServiceImpl implements TicketsService {
     @Autowired
     TicketsRepo ticketsRepo;

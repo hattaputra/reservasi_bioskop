@@ -3,8 +3,8 @@ package org.binar.SpringJPA.controllers;
 import org.binar.SpringJPA.dto.ResponseData;
 import org.binar.SpringJPA.dto.TicketData;
 import org.binar.SpringJPA.entities.*;
+import org.binar.SpringJPA.services.impl.SeatsServiceImpl;
 import org.binar.SpringJPA.services.impl.TicketsServiceImpl;
-import org.binar.SpringJPA.services.impl.UsersServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import java.security.PublicKey;
 
 @RestController
-@RequestMapping("/tickets")
+@RequestMapping("/api/tickets")
 public class TicketsController {
     @Autowired
     TicketsServiceImpl ticketsServiceImpl;
+    SeatsServiceImpl seatsServiceImpl;
 
     @PostMapping("/buy-ticket")
     public ResponseEntity<ResponseData<TicketData>> create(@RequestBody TicketsEntity ticket){
@@ -28,6 +29,8 @@ public class TicketsController {
             FilmsEntity film = ticket.getSchedulesEntity().getFilmsEntity();
             SeatsEntity seat = ticket.getSeatsEntity();
             StudiosEntity studio = ticket.getSeatsEntity().getStudiosEntity();
+            seat.setSeat_status(true);
+            seatsServiceImpl.update(seat.getId(),seat);
             tdata.setUsername(user.getUsername());
             tdata.setFilm(film.getFilm_name());
             tdata.setPrice(schedules.getPrice());

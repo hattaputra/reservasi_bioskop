@@ -1,5 +1,6 @@
 package org.binar.SpringJPA.controllers;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.binar.SpringJPA.dto.ResponseData;
 import org.binar.SpringJPA.entities.FilmsEntity;
 import org.binar.SpringJPA.services.impl.FilmsServiceImpl;
@@ -35,7 +36,7 @@ public class FilmsController {
         try{
             ResponseData<FilmsEntity> data = new ResponseData<>();
             data.setStatus("200");
-            data.setMessagge("Film successfully added");
+            data.setMessagge("Film successfully updated");
             data.setData(filmsServiceImpl.update(id, film));
             return ResponseEntity.ok(data);
         }catch (Exception e){
@@ -51,9 +52,10 @@ public class FilmsController {
     public FilmsEntity findOne(@PathVariable String id){
         return filmsServiceImpl.findOne(id);
     }
-    @GetMapping("/get-showing")
-    public List<FilmsEntity> isShowing(){
-        return filmsServiceImpl.isShowing();
+
+    @GetMapping("/get-showing/{date}")
+    public List<FilmsEntity> isShowing(@PathVariable  LocalDate date){
+        return filmsServiceImpl.isShowing(date);
     }
     @DeleteMapping("/drop/{id}")
     public void delete(@PathVariable String id){

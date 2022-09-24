@@ -1,11 +1,13 @@
 package org.binar.SpringJPA.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -24,12 +26,15 @@ public class SchedulesEntity {
     @Column(name = "price")
     private Integer price;
 
+    @JsonFormat(pattern = "dd-MM-yyyy")
     @Column(name = "show_date")
     private LocalDate show_date;
 
+    @JsonFormat(pattern = "HH:mm:ss")
     @Column(name = "start_at")
     private LocalTime start_at;
 
+    @JsonFormat(pattern = "HH:mm:ss")
     @Column(name = "end_at")
     private LocalTime end_at;
 }

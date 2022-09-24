@@ -15,15 +15,16 @@ public class SeatsServiceImpl implements SeatsService {
     SeatsRepo seatsRepo;
 
     public SeatsEntity create(SeatsEntity seat){
+        seat.setSeat_status(false);
         return  seatsRepo.save(seat);
     }
-    public SeatsEntity update(Character row, Integer number, SeatsEntity seat){
-        SeatsEntity data = new SeatsEntity();
+    public SeatsEntity update(SeatId id, SeatsEntity seat){
+        SeatsEntity data = seatsRepo.findById(id).get();
         data.setSeat_status(seat.isSeat_status());
         return  seatsRepo.save(data);
     }
-    public SeatsEntity findOne(Character row, Integer number){
-        Optional<SeatsEntity> seat = seatsRepo.findById(new SeatId(row, number));
+    public SeatsEntity findOne(SeatId id){
+        Optional<SeatsEntity> seat = seatsRepo.findById(id);
         if (!seat.isPresent()){
             return null;
         }
@@ -32,7 +33,7 @@ public class SeatsServiceImpl implements SeatsService {
     public Iterable<SeatsEntity> findAll(){
         return seatsRepo.findAll();
     }
-    public void delete(Character row, Integer number){
-        seatsRepo.deleteById(new SeatId(row, number));
+    public void delete(SeatId id){
+        seatsRepo.deleteById(id);
     }
 }

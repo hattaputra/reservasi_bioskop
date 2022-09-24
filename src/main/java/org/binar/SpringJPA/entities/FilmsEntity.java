@@ -1,5 +1,6 @@
 package org.binar.SpringJPA.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +22,7 @@ public class FilmsEntity {
     @Column(name = "category")
     private String category;
 
+    @JsonFormat(pattern = "dd-MM-yyyy")
     @Column(name = "onShow")
     private LocalDate onShow;
 }
