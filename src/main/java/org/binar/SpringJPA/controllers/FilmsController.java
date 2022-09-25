@@ -5,6 +5,7 @@ import org.binar.SpringJPA.dto.ResponseData;
 import org.binar.SpringJPA.entities.FilmsEntity;
 import org.binar.SpringJPA.services.impl.FilmsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,9 +54,14 @@ public class FilmsController {
         return filmsServiceImpl.findOne(id);
     }
 
-    @GetMapping("/get-showing/{date}")
-    public List<FilmsEntity> isShowing(@PathVariable  LocalDate date){
-        return filmsServiceImpl.isShowing(date);
+//    @GetMapping("/get-showing/{data}")
+//    public List<FilmsEntity> isShowing(@PathVariable  String data){
+//        LocalDate date = LocalDate.parse(data);
+//        return filmsServiceImpl.isShowing(date);
+//    }
+    @GetMapping("/get-showing")
+    public List<FilmsEntity> isShowing(){
+        return filmsServiceImpl.isShowing();
     }
     @DeleteMapping("/drop/{id}")
     public void delete(@PathVariable String id){

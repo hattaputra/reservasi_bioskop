@@ -13,7 +13,6 @@ import java.util.List;
 @Repository
 public interface FilmsRepo extends JpaRepository<FilmsEntity, String> {
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    @Query("SELECT f FROM FilmsEntity f WHERE f.onShow = :date")
-    List<FilmsEntity> findOnShowingFilms(@PathParam("date") LocalDate date);
+    @Query("SELECT f FROM FilmsEntity f WHERE f.onShow >= CURRENT_DATE")
+    List<FilmsEntity> findOnShowingFilms();
 }

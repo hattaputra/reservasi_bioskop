@@ -39,8 +39,8 @@ public class FilmsServiceImpl implements FilmsService {
         return filmsRepo.findAll();
     }
 
-    public List<FilmsEntity> isShowing(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
-        return filmsRepo.findOnShowingFilms(date);
+    public List<FilmsEntity> isShowing(){
+        return filmsRepo.findOnShowingFilms();
     }
     public void delete(String code){
         filmsRepo.deleteById(code);
