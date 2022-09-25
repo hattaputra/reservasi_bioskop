@@ -37,6 +37,11 @@ public class SchedulesController {
         return schedulesServiceImpl.findOne(id);
     }
 
+    @GetMapping("/get-film/{code}")
+    public SchedulesEntity findByCode(@PathVariable String code){
+        return schedulesServiceImpl.findByCode(code);
+    }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<ResponseData<SchedulesEntity>> update(@PathVariable Integer id, @RequestBody SchedulesEntity schedule){
         try{

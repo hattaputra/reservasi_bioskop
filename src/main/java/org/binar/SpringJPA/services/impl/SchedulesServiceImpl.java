@@ -1,7 +1,6 @@
 package org.binar.SpringJPA.services.impl;
 
 import org.binar.SpringJPA.entities.SchedulesEntity;
-import org.binar.SpringJPA.entities.StudiosEntity;
 import org.binar.SpringJPA.repositories.SchedulesRepo;
 import org.binar.SpringJPA.services.SchedulesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +30,9 @@ public class SchedulesServiceImpl implements SchedulesService {
             return null;
         }
         return schedule.get();
+    }
+    public SchedulesEntity findByCode(String code){
+        return schedulesRepo.findByFilmsEntity(code);
     }
     public Iterable<SchedulesEntity> findAll(){
         return schedulesRepo.findAll();
