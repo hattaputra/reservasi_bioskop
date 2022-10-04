@@ -2,7 +2,6 @@ package org.binar.SpringJPA.controllers;
 
 import org.binar.SpringJPA.dto.ResponseData;
 import org.binar.SpringJPA.entities.UsersEntity;
-import org.binar.SpringJPA.services.UsersService;
 import org.binar.SpringJPA.services.impl.UsersServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,9 +15,9 @@ public class UsersController {
     private UsersServiceImpl usersServiceImpl;
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseData<UsersEntity>> create(@RequestBody UsersEntity user){
+    public ResponseEntity<ResponseData> create(@RequestBody UsersEntity user){
         try{
-            ResponseData<UsersEntity> data = new ResponseData<>();
+            ResponseData data = new ResponseData();
             data.setStatus("200");
             data.setMessagge("User successfully created");
             data.setData(usersServiceImpl.create(user));
@@ -28,12 +27,13 @@ public class UsersController {
         }
     }
     @PutMapping("/update/{username}")
-    public ResponseEntity<ResponseData<UsersEntity>> update(@PathVariable String username, @RequestBody UsersEntity user){
+    public ResponseEntity<ResponseData> update(@PathVariable String username, @RequestBody UsersEntity user){
         try{
-            ResponseData<UsersEntity> data = new ResponseData<>();
+            ResponseData data = new ResponseData();
             data.setStatus("200");
             data.setMessagge("User successfully updated");
-            data.setData(usersServiceImpl.update(username, user));
+            usersServiceImpl.update(username, user);
+            data.setData(usersServiceImpl.findById(username));
             return ResponseEntity.ok(data);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

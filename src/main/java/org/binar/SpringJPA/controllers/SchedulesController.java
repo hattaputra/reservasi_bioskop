@@ -1,6 +1,10 @@
 package org.binar.SpringJPA.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.binar.SpringJPA.dto.ResponseData;
+import org.binar.SpringJPA.dto.ScheduleRes;
 import org.binar.SpringJPA.entities.SchedulesEntity;
 import org.binar.SpringJPA.services.impl.SchedulesServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +19,20 @@ public class SchedulesController {
     SchedulesServiceImpl schedulesServiceImpl;
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseData<SchedulesEntity>> create(@RequestBody SchedulesEntity schedule){
+    public ResponseEntity<ResponseData> create(@RequestBody SchedulesEntity schedule){
         try{
-            ResponseData<SchedulesEntity> data = new ResponseData<>();
+            ResponseData data = new ResponseData();
+            ScheduleRes response = new ScheduleRes();
+            SchedulesEntity input = schedulesServiceImpl.create(schedule);
+            response.setScheduleId(input.getScheduleId());
+            response.setFilmCode(input.getFilmCode());
+            response.setPrice(input.getPrice());
+            response.setShowDate(input.getShowDate());
+            response.setStartAt(input.getStartAt());
+            response.setEndAt(input.getEndAt());
             data.setStatus("200");
-            data.setMessagge("User successfully created");
-            data.setData(schedulesServiceImpl.create(schedule));
+            data.setMessagge("Schedule successfully created");
+            data.setData(response);
             return ResponseEntity.ok(data);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -38,17 +50,48 @@ public class SchedulesController {
     }
 
     @GetMapping("/get-film/{code}")
-    public SchedulesEntity findByCode(@PathVariable String code){
-        return schedulesServiceImpl.findByCode(code);
+    public ResponseEntity<ResponseData> findByCode(@PathVariable String code){
+        try{
+            ResponseData data = new ResponseData();
+            List<ScheduleRes> list = new ArrayList<>();
+            List<SchedulesEntity> input = schedulesServiceImpl.findByCode(code);
+            input.stream().map((x) -> {
+                ScheduleRes response = new ScheduleRes();
+                response.setScheduleId(x.getScheduleId());
+                response.setFilmCode(x.getFilmCode());
+                response.setPrice(x.getPrice());
+                response.setShowDate(x.getShowDate());
+                response.setStartAt(x.getStartAt());
+                response.setEndAt(x.getEndAt());
+                return response;
+            }).forEach((y) -> {
+                list.add(y);
+            });;
+            data.setStatus("200");
+            data.setMessagge("Schedule successfully retrieved");
+            data.setData(list);
+            return ResponseEntity.ok(data);
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseData<SchedulesEntity>> update(@PathVariable Integer id, @RequestBody SchedulesEntity schedule){
+    public ResponseEntity<ResponseData> update(@PathVariable Integer id, @RequestBody SchedulesEntity schedule){
         try{
-            ResponseData<SchedulesEntity> data = new ResponseData<>();
+            ResponseData data = new ResponseData();
+            ScheduleRes response = new ScheduleRes();
+            schedulesServiceImpl.update(id, schedule);
+            SchedulesEntity input = schedulesServiceImpl.findOne(id);
+            response.setScheduleId(input.getScheduleId());
+            response.setFilmCode(input.getFilmCode());
+            response.setPrice(input.getPrice());
+            response.setShowDate(input.getShowDate());
+            response.setStartAt(input.getStartAt());
+            response.setEndAt(input.getEndAt());
             data.setStatus("200");
-            data.setMessagge("User successfully created");
-            data.setData(schedulesServiceImpl.update(id, schedule));
+            data.setMessagge("Schedule successfully updated");
+            data.setData(response);
             return ResponseEntity.ok(data);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

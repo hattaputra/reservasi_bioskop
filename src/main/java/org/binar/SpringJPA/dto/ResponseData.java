@@ -5,8 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ResponseData<T> {
+public class ResponseData {
     private String status;
     private String messagge;
-    private T data;
+    private Object data;
 }

@@ -6,6 +6,7 @@ import org.binar.SpringJPA.services.SchedulesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,9 +20,9 @@ public class SchedulesServiceImpl implements SchedulesService {
     public SchedulesEntity update(Integer id, SchedulesEntity schedule){
         SchedulesEntity data = schedulesRepo.findById(id).get();
         data.getPrice();
-        data.getShow_date();
-        data.getStart_at();
-        data.getEnd_at();
+        data.getShowDate();
+        data.getStartAt();
+        data.getEndAt();
         return schedulesRepo.save(data);
     }
     public SchedulesEntity findOne(Integer id){
@@ -31,8 +32,8 @@ public class SchedulesServiceImpl implements SchedulesService {
         }
         return schedule.get();
     }
-    public SchedulesEntity findByCode(String code){
-        return schedulesRepo.findByFilmsEntity(code);
+    public List<SchedulesEntity> findByCode(String code){
+        return schedulesRepo.findByFilmCode(code);
     }
     public Iterable<SchedulesEntity> findAll(){
         return schedulesRepo.findAll();

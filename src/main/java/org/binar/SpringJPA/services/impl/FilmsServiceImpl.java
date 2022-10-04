@@ -1,15 +1,11 @@
 package org.binar.SpringJPA.services.impl;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.binar.SpringJPA.entities.FilmsEntity;
 import org.binar.SpringJPA.repositories.FilmsRepo;
 import org.binar.SpringJPA.services.FilmsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +19,7 @@ public class FilmsServiceImpl implements FilmsService {
     }
     public FilmsEntity update(String code, FilmsEntity film){
         FilmsEntity data = filmsRepo.findById(code).get();
-        data.setFilm_name(film.getFilm_name());
+        data.setFilmName(film.getFilmName());
         data.setCategory(film.getCategory());
         data.setOnShow(film.getOnShow());
         return filmsRepo.save(data);

@@ -15,11 +15,11 @@ public class StudiosController {
     StudiosServiceImpl studiosServiceImpl;
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseData<StudiosEntity>> create(@RequestBody StudiosEntity studio){
+    public ResponseEntity<ResponseData> create(@RequestBody StudiosEntity studio){
         try{
-            ResponseData<StudiosEntity> data = new ResponseData<>();
+            ResponseData data = new ResponseData();
             data.setStatus("200");
-            data.setMessagge("Film successfully added");
+            data.setMessagge("Studio successfully added");
             data.setData(studiosServiceImpl.create(studio));
             return ResponseEntity.ok(data);
         }catch (Exception e){
@@ -28,12 +28,13 @@ public class StudiosController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseData<StudiosEntity>> update(@PathVariable Integer id, @RequestBody StudiosEntity studio){
+    public ResponseEntity<ResponseData> update(@PathVariable Integer id, @RequestBody StudiosEntity studio){
         try{
-            ResponseData<StudiosEntity> data = new ResponseData<>();
+            ResponseData data = new ResponseData();
             data.setStatus("200");
-            data.setMessagge("Film successfully added");
-            data.setData(studiosServiceImpl.update(id, studio));
+            data.setMessagge("Studio successfully added");
+            studiosServiceImpl.update(id, studio);
+            data.setData(studiosServiceImpl.findOne(id));
             return ResponseEntity.ok(data);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

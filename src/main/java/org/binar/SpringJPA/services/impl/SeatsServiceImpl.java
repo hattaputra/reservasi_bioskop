@@ -7,6 +7,7 @@ import org.binar.SpringJPA.services.SeatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,12 +16,12 @@ public class SeatsServiceImpl implements SeatsService {
     SeatsRepo seatsRepo;
 
     public SeatsEntity create(SeatsEntity seat){
-        seat.setSeat_status(false);
+        seat.setSeatStatus(true);
         return  seatsRepo.save(seat);
     }
     public SeatsEntity update(SeatId id, SeatsEntity seat){
         SeatsEntity data = seatsRepo.findById(id).get();
-        data.setSeat_status(seat.isSeat_status());
+        data.setSeatStatus(seat.isSeatStatus());
         return  seatsRepo.save(data);
     }
     public SeatsEntity findOne(SeatId id){
@@ -29,6 +30,9 @@ public class SeatsServiceImpl implements SeatsService {
             return null;
         }
         return seat.get();
+    }
+    public List<SeatsEntity> findByStudioId(Integer id){
+        return seatsRepo.findByStudioId(id);
     }
     public Iterable<SeatsEntity> findAll(){
         return seatsRepo.findAll();

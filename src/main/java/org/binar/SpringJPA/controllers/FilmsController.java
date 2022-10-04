@@ -1,16 +1,13 @@
 package org.binar.SpringJPA.controllers;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.binar.SpringJPA.dto.ResponseData;
 import org.binar.SpringJPA.entities.FilmsEntity;
 import org.binar.SpringJPA.services.impl.FilmsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -20,9 +17,9 @@ public class FilmsController {
     FilmsServiceImpl filmsServiceImpl;
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseData<FilmsEntity>> create(@RequestBody FilmsEntity film){
+    public ResponseEntity<ResponseData> create(@RequestBody FilmsEntity film){
         try{
-            ResponseData<FilmsEntity> data = new ResponseData<>();
+            ResponseData data = new ResponseData();
             data.setStatus("200");
             data.setMessagge("Film successfully added");
             data.setData(filmsServiceImpl.create(film));
@@ -33,12 +30,13 @@ public class FilmsController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseData<FilmsEntity>> update(@PathVariable String id, @RequestBody FilmsEntity film){
+    public ResponseEntity<ResponseData> update(@PathVariable String id, @RequestBody FilmsEntity film){
         try{
-            ResponseData<FilmsEntity> data = new ResponseData<>();
+            ResponseData data = new ResponseData();
             data.setStatus("200");
             data.setMessagge("Film successfully updated");
-            data.setData(filmsServiceImpl.update(id, film));
+            filmsServiceImpl.update(id, film);
+            data.setData(filmsServiceImpl.findOne(id));
             return ResponseEntity.ok(data);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -54,11 +52,6 @@ public class FilmsController {
         return filmsServiceImpl.findOne(id);
     }
 
-//    @GetMapping("/get-showing/{data}")
-//    public List<FilmsEntity> isShowing(@PathVariable  String data){
-//        LocalDate date = LocalDate.parse(data);
-//        return filmsServiceImpl.isShowing(date);
-//    }
     @GetMapping("/get-showing")
     public List<FilmsEntity> isShowing(){
         return filmsServiceImpl.isShowing();

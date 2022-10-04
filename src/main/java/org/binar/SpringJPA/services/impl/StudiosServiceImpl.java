@@ -1,7 +1,6 @@
 package org.binar.SpringJPA.services.impl;
 
 import org.binar.SpringJPA.entities.StudiosEntity;
-import org.binar.SpringJPA.entities.UsersEntity;
 import org.binar.SpringJPA.repositories.StudiosRepo;
 import org.binar.SpringJPA.services.StudiosService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ public class StudiosServiceImpl implements StudiosService {
     }
     public StudiosEntity update(Integer id, StudiosEntity studiosEntity){
         StudiosEntity data = studiosRepo.findById(id).get();
-        data.getStudio_name();
+        data.getStudioName();
         return studiosRepo.save(data);
     }
     public StudiosEntity findOne(Integer id){
