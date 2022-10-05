@@ -22,7 +22,7 @@ public class SeatsEntity {
     private Integer studioId;
 
     @ManyToOne
-    @JoinColumn(name = "studio_id", referencedColumnName = "studio_id", insertable = false, updatable = false)
+    @JoinColumn(name = "studio_id", insertable = false, updatable = false)
     private StudiosEntity studiosEntity;
 
     @Column(name = "seat_status")

@@ -3,8 +3,12 @@ package org.binar.SpringJPA.controllers;
 import org.binar.SpringJPA.dto.ResponseData;
 import org.binar.SpringJPA.dto.TicketData;
 import org.binar.SpringJPA.entities.*;
+import org.binar.SpringJPA.services.impl.FilmsServiceImpl;
+import org.binar.SpringJPA.services.impl.SchedulesServiceImpl;
 import org.binar.SpringJPA.services.impl.SeatsServiceImpl;
+import org.binar.SpringJPA.services.impl.StudiosServiceImpl;
 import org.binar.SpringJPA.services.impl.TicketsServiceImpl;
+import org.binar.SpringJPA.services.impl.UsersServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,34 +18,50 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/tickets")
 public class TicketsController {
+
     @Autowired
     TicketsServiceImpl ticketsServiceImpl;
+
+    @Autowired
     SeatsServiceImpl seatsServiceImpl;
+
+    @Autowired
+    FilmsServiceImpl filmsServiceImpl;
+
+    @Autowired
+    UsersServiceImpl usersServiceImpl;
+
+    @Autowired
+    StudiosServiceImpl studiosServiceImpl;
+
+    @Autowired
+    SchedulesServiceImpl schedulesServiceImpl;
 
     @PostMapping("/buy-ticket")
     public ResponseEntity<ResponseData> create(@RequestBody TicketsEntity ticket){
         try{
-            TicketData tdata = new TicketData();
             ResponseData data = new ResponseData();
-            UsersEntity user = ticket.getUsersEntity();
-            SchedulesEntity schedules = ticket.getSchedulesEntity();
-            FilmsEntity film = ticket.getSchedulesEntity().getFilmsEntity();
-            SeatsEntity seat = ticket.getSeatsEntity();
-            StudiosEntity studio = ticket.getSeatsEntity().getStudiosEntity();
-            seat.setSeatStatus(true);
+            TicketData tdata = new TicketData();
+            UsersEntity user = usersServiceImpl.findById(ticket.getUsername());
+            SchedulesEntity schedules = schedulesServiceImpl.findOne(ticket.getScheduleId());
+            FilmsEntity film = filmsServiceImpl.findOne(schedules.getFilmCode());
+            SeatsEntity seat = seatsServiceImpl.findOne(new SeatId(ticket.getSeatRow(), ticket.getSeatNumber()));
+            StudiosEntity studio = studiosServiceImpl.findOne(seat.getStudioId());
+            seat.setSeatStatus(false);
             seatsServiceImpl.update(seat.getSeatId(),seat);
             tdata.setUsername(user.getUsername());
             tdata.setFilm(film.getFilmName());
             tdata.setPrice(schedules.getPrice());
-            tdata.setStudio(studio.getStudioName());
-            tdata.setSeat(seat.getSeatId());
+            tdata.setStudioName(studio.getStudioName());
+            tdata.setSeatRow(ticket.getSeatRow());
+            tdata.setSeatNumber(ticket.getSeatNumber());
             tdata.setShowDate(schedules.getShowDate());
             tdata.setStartAt(schedules.getStartAt());
             tdata.setEndAt(schedules.getEndAt());
+            ticketsServiceImpl.create(ticket);
             data.setStatus("200");
             data.setMessagge("Ticket successfully reserved");
             data.setData(tdata);
-            ticketsServiceImpl.create(ticket);
             return ResponseEntity.ok(data);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

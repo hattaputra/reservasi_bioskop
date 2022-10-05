@@ -14,6 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Table(name = "tickets")
 public class TicketsEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ticket_id")
@@ -23,27 +24,27 @@ public class TicketsEntity {
     private String username;
 
     @ManyToOne
-    @JoinColumn(name = "username", referencedColumnName = "username", insertable = false, updatable = false)
+    @JoinColumn(name = "username", insertable = false, updatable = false)
     private UsersEntity usersEntity;
 
     @Column(name = "schedule_id")
     private Integer scheduleId;
 
     @ManyToOne
-    @JoinColumn(name = "schedule_id", referencedColumnName = "schedule_id", insertable = false, updatable = false)
+    @JoinColumn(name = "schedule_id", insertable = false, updatable = false)
     private SchedulesEntity schedulesEntity;
 
-    @Column(name = "seat_number")
-    private Integer seatNumber;
+    @Column(name = "studio_id")
+    private Integer studioId;
+
+    @OneToOne
+    @JoinColumn(name = "studio_id", insertable = false, updatable = false)
+    private StudiosEntity studiosEntity;
+
     @Column(name = "seat_row")
     private Character seatRow;
 
-    @MapsId("seatId")
-    @JoinColumns({
-            @JoinColumn(name = "seat_number", referencedColumnName = "seat_number", insertable = false, updatable = false),
-            @JoinColumn(name = "seat_row", referencedColumnName = "seat_row", insertable = false, updatable = false)
-    })
-    @OneToOne
-    private SeatsEntity seatsEntity;
+    @Column(name = "seat_number")
+    private Integer seatNumber;
 
 }
